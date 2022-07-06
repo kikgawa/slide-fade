@@ -1,6 +1,5 @@
 const slides = document.querySelectorAll('.slide-item')
 const slideLength = slides.length
-const slideNavs = document.querySelectorAll('.slide-nav')
 const slidePerv = document.querySelector('.slide-nav-prev')
 const slideNext = document.querySelector('.slide-nav-next')
 let now = 0
@@ -19,10 +18,6 @@ const slideFade = () => {
   }
   slides[now].classList.add('active')
 }
-// (() => {
-//   timeoutId = setInterval(slideFade, intervalTime)
-// })();
-setInterval(slideFade, intervalTime)
 
 slidePerv.addEventListener('click', () => {
   slides[now].classList.remove('active')
@@ -32,9 +27,13 @@ slidePerv.addEventListener('click', () => {
     now--
   }
   slides[now].classList.add('active')
-  // clearInterval(timeoutId)
+  clearInterval(timer)
+  timer = setInterval(slideFade, intervalTime)
 })
 slideNext.addEventListener('click', () => {
   slideFade()
-  // clearInterval(timeoutId)
+  clearInterval(timer)
+  timer = setInterval(slideFade, intervalTime)
 })
+
+let timer = setInterval(slideFade, intervalTime)
