@@ -26,6 +26,22 @@ const createSlideShow = (targetId, items) => {
   slideContainer.insertAdjacentHTML('afterbegin', slideHtml)
   // slideContainer.innerHTML = slideHtml
 
+  const preloadImage = (src) => {
+    const image = new Image()
+    return new Promise((resolve => {
+      image.onload = () => {
+        resolve(image)
+      }
+      image.src = src
+    }))
+  }
+
+  const promises = []
+
+  targetId.items.forEach(() => promises.push(preloadImage(imgPath)))
+  await Promise.all(promises)
+  runSlide()
+
   const slides = document.querySelectorAll(`${targetId.targetId} .slide-item`)
   const slideLength = slides.length
   const slidePrev = document.querySelector(`${targetId.targetId} .slide-nav-prev`)
@@ -33,11 +49,14 @@ const createSlideShow = (targetId, items) => {
   let now = 0
   let intervalTime = 6000
 
+
+
+
   const slideShow = {
     play() {
-      window.addEventListener('load', () => {
-        slides[0].classList.add('active')
-      })
+      // window.addEventListener('load', () => {
+      slides[0].classList.add('active')
+      // })
       const slideFade = () => {
         slides[now].classList.remove('active')
         now >= slideLength - 1 ? now = 0 : now++
